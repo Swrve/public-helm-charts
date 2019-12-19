@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: monitoring
+  name: {{ include "honey-aws-lb.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "honey-aws-lb.name" . }}
+    helm.sh/chart: {{ include "honey-aws-lb.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/role: {{ include "honey-aws-lb.fullname" . }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "honey-aws-lb.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/role: {{ include "honey-aws-lb.fullname" . }}
+        chart: {{ .Chart.Name }}
+    spec:
+      containers:
+        {{- range $key, $value :=.Values.honeyMonitoredLoadBalancers }}
+        - name: {{ $key }}
+          image: {{ $.Values.image.repository }}:{{ required "A valid .Values.docker_tag entry required!" $.Values.image.docker_tag }}
+          imagePullPolicy: {{ $.Values.image.pullPolicy }}
+          {{ if eq .type  "alb" -}}
+          command: [ "/usr/bin/honeyalb" ]
+          {{ else -}}
+          command: [ "/usr/bin/honeyelb" ]
+          {{ end -}}
+          args: [
+            "--writekey",
+            {{.writekey | quote }},
+            "--samplerate",
+            {{.samplerate | quote}},
+            "--dataset",
+            {{.dataset | quote }},
+            "ingest",
+            {{ $key | quote}}
+            ]
+          env:
+            - name: AWS_REGION
+              value: {{ $.Values.region | quote}}
+          {{- if $.Values.extra_env }}
+        {{- range $key := splitList "|" $.Values.extra_env }}
+        {{- $env := split "=" $key }}           
+            - name: {{ $env._0 }}
+              value: {{ $env._1 | quote}}
+        {{- end }}
+        {{- end }}    
+        {{- end -}}
+        
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

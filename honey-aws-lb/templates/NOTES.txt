@@ -1,0 +1,13 @@
+Thank you for installing {{ .Chart.Name }}. Your release is named {{ .Release.Name }}.
+
+
+
+You can get the status of your release using these commands.
+
+  $ helm status {{ .Release.Name }}
+  $ helm get {{ .Release.Name }}
+
+To view the logs of honeycomb ingestion,
+
+  $ kubectl logs deployment/{{ .Release.Name }} --namespace {{.Release.Namespace}}
+

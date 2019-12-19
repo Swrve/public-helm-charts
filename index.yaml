@@ -1,0 +1,12 @@
+apiVersion: v1
+entries:
+  honey-aws-lb:
+  - apiVersion: v1
+    appVersion: 1.0.0
+    created: "2019-12-19T18:39:03.301719Z"
+    digest: e18a8c8d803a05b540bae3720e617dcbf2145cefbc931b50c5589c548cf610e8
+    name: honey-aws-lb
+    urls:
+    - https://swrve.github.io/public-helm-charts/honey-aws-lb-1.0.0.tgz
+    version: 1.0.0
+generated: "2019-12-19T18:39:03.300969Z"
