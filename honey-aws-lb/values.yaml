@@ -13,12 +13,10 @@ nameOverride: honey-aws-lb
 fullnameOverride: ""
 
 nodeSelector:
-  role: ops
 
 tolerations: []
 
 affinity: {}
-
 
 env:
   
