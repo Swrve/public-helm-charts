@@ -12,7 +12,7 @@ AWS Load balancers to be monitored will need to have logging enabled. This can b
 
 If you are running this on AWS EKS, you can use IAM instance roles to allow the EC2 nodes to read the S3 bucket the ELB/ALB writes logs to as specified above.
 
-If you prefer to use AWS IAM credentials directly, you can use the default AWS environment variable and add them to the helm chart by setting `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`  in the extra_envs value, using pipe separatad values e.g:
+If you prefer to use AWS IAM credentials directly, you can use AWS cli environment variables and add them to the helm chart by setting `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`  in the extra_envs value, using pipe separated values e.g:
 
 `--set extra_env="AWS_ACCESS_KEY_ID=AKAIxxxxxxxx|AWS_SECRET_ACCESS_KEY=xxx"`
 
@@ -43,8 +43,7 @@ Once added, you can install the helm chart:
 
 ```
 $ kubectl config use <your kubernetes cluster context>
-$ helm upgrade honey-aws-lb honey-aws-lb honey-aws-lb.yaml --namespace mon
-itoring
+$ helm install honey-aws-lb honey-aws-lb honey-aws-lb.yaml --namespace monitoring
 ```
 
 
