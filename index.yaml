@@ -3,6 +3,7 @@ entries:
   honey-aws-lb:
   - apiVersion: v1
     appVersion: 1.0.0
+    description: "Run Honeycomb AWS Load Balanancer ingest from Helm"
     created: "2019-12-19T18:39:03.301719Z"
     digest: e18a8c8d803a05b540bae3720e617dcbf2145cefbc931b50c5589c548cf610e8
     name: honey-aws-lb
