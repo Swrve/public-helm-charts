@@ -39,11 +39,12 @@ honeyMonitoredLoadBalancers:
     writekey: "aaaazzzz11119999"
 ```
 
-Once added, you can install the helm chart:
+Once added, you can install the helm chart. For example, with the above values stores in honey-aws-lb.yaml:
 
 ```
 $ kubectl config use <your kubernetes cluster context>
-$ helm install honey-aws-lb honey-aws-lb honey-aws-lb.yaml --namespace monitoring
+$ helm repo add swrve-public https://swrve.github.io/public-helm-charts/
+$ helm install swrve-public/honey-aws-lb honey-aws-lb -f honey-aws-lb.yaml --namespace monitoring
 ```
 
 
